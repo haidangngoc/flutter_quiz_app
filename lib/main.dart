@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_quiz_app/result.dart';
+import './quiz.dart';
+import './result.dart';
 
 // void main() {
 //   runApp(MyApp());
@@ -6,7 +9,61 @@ import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return _MyAppState();
+  }
+}
+
+class _MyAppState extends State<MyApp> {
+  final _questions = const [
+    {
+      'questionText': 'What\'s your favorite color?',
+      'answers': [
+        {'text': 'Black', 'score': 10},
+        {'text': 'Red', 'score': 5},
+        {'text': 'Green', 'score': 3},
+        {'text': 'White', 'score': 1},
+      ],
+    },
+    {
+      'questionText': 'What\'s your favorite animal?',
+      'answers': [
+        {'text': 'Dog', 'score': 3},
+        {'text': 'Cat', 'score': 5},
+        {'text': 'Lion', 'score': 10},
+        {'text': 'Chicken', 'score': 1},
+      ],
+    },
+    {
+      'questionText': 'What\'s your favorite teacher?',
+      'answers': [
+        {'text': 'Hai', 'score': 1},
+        {'text': 'Ha', 'score': 1},
+        {'text': 'Bo', 'score': 1},
+        {'text': 'Someone', 'score': 1},
+      ],
+    },
+  ];
+  var _questionIndex = 0;
+  var _totalScore = 0;
+
+  void _answerQuestion(int score) {
+    _totalScore += score;
+
+    setState(() {
+      _questionIndex = _questionIndex + 1;
+    });
+
+    if (_questionIndex < _questions.length) {
+      print('We have more question!');
+    } else {
+      print('No more question');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -14,10 +71,16 @@ class MyApp extends StatelessWidget {
         appBar: AppBar(
           title: Text('My First App'),
         ),
-        body: Text('This is my default text!'),
+        body: _questionIndex < _questions.length
+            ? Quiz(
+                answerQuestion: _answerQuestion,
+                questionIndex: _questionIndex,
+                questions: _questions,
+              )
+            : Result(_totalScore),
       ),
     );
   }
 }
 
-//Test commit
+//This is the commit from Macbook
